@@ -10,7 +10,7 @@ Para utilizar o d2webTable você deve adicionar as uses:
 
 Declarar no head do html
 ```html
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link id="pagestyle" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css" rel="stylesheet" />
 ```
 
 # Como usar
