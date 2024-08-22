@@ -1,6 +1,12 @@
 # d2webTable
 Este repositório contém um conjunto de classes Delphi desenvolvido para gerar tabela no formato HTML.
 
+# Instalação
+Instalação usando o boss
+```
+boss install https://github.com/rafaeljeremias/d2webTable-master.git
+```
+
 # Declaração
 Para utilizar o d2webTable você deve adicionar as uses:
 ```pascal
