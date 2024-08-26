@@ -40,8 +40,10 @@ type
 
   IModelWebTable = Interface
     ['{41B0B264-F2D8-49FD-BAE1-6622EB84D25D}']
-    function AddwebTableDataSet(AColumnName: string): IModelWebTableDataSet;
+    function Order(AValue: string): IModelWebTable;
+    function ColumnOrder(AValue: string): IModelWebTable;
     function Generate(AGenerateFoot: Boolean = True): string;
+    function AddwebTableDataSet(AColumnName: string): IModelWebTableDataSet;
   End;
 
 implementation

@@ -12,6 +12,8 @@ uses
 type
   TModelWebTable = class(TInterfacedObject, IModelWebTable)
   strict private
+    FOrder: string;
+    FColumnOrder: string;
     FwebTableDataSets: TInterfaceList;
 
     function GenerateBodyHtml: string;
@@ -22,8 +24,10 @@ type
     destructor Destroy; override;
     class function New: IModelWebTable;
 
-    function AddwebTableDataSet(AColumnName: string): IModelWebTableDataSet;
+    function Order(AValue: string): IModelWebTable;
+    function ColumnOrder(AValue: string): IModelWebTable;
     function Generate(AGenerateFoot: Boolean = True): string;
+    function AddwebTableDataSet(AColumnName: string): IModelWebTableDataSet;
   end;
 
 implementation
@@ -36,6 +40,13 @@ begin
   Result := TModelWebTableDataSet.New(Self, AColumnName);
 
   FwebTableDataSets.Add(Result);
+end;
+
+function TModelWebTable.ColumnOrder(AValue: string): IModelWebTable;
+begin
+  result := Self;
+
+  FColumnOrder := AValue;
 end;
 
 constructor TModelWebTable.Create;
@@ -54,7 +65,9 @@ end;
 
 function TModelWebTable.Generate(AGenerateFoot: Boolean): string;
 var
+  LOrder: string;
   LWebTableID: string;
+  LColumnOrder: string;
   LRetornoHtmlStr: string;
 begin
   LWebTableID := IntToStr(Random(MaxInt));
@@ -70,6 +83,15 @@ begin
   if AGenerateFoot then
     LRetornoHtmlStr := LRetornoHtmlStr + GenerateFootHtml;
 
+  LColumnOrder := '0';
+
+  if StrToIntDef(FColumnOrder, 0) > 0 then
+    LColumnOrder := FColumnOrder;
+
+  LOrder := 'asc';
+  if FOrder = 'desc' then
+    LOrder := FOrder;
+
   LRetornoHtmlStr := LRetornoHtmlStr +
                      Format('</table> ' +
                             '<script> '+
@@ -81,6 +103,7 @@ begin
                             '        } '+
                             '      } '+
                             '    }, '+
+                            '    order: [[%s, "%s"]], '+
                             '    scrollY: true, '+
                             '    language: { '+
                             '      "decimal": ",", '+
@@ -108,7 +131,7 @@ begin
                             '    } '+
                             '  }); '+
                             '</script>',
-                           [LWebTableID]);
+                           [LWebTableID, LColumnOrder, LOrder]);
 
   result := LRetornoHtmlStr;
 end;
@@ -186,6 +209,13 @@ end;
 class function TModelWebTable.New: IModelWebTable;
 begin
   result := Self.Create;
+end;
+
+function TModelWebTable.Order(AValue: string): IModelWebTable;
+begin
+  result := Self;
+
+  FOrder := AValue;
 end;
 
 end.
